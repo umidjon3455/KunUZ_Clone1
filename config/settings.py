@@ -5,18 +5,26 @@ Django settings for config project.
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
-# Set DJANGO_SECRET_KEY in the environment for deployments.
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-local-development-only-change-this",
-)
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise ImproperlyConfigured(
+        "DJANGO_SECRET_KEY is missing. Copy .env.example to .env and set a new secret key."
+    )
 
-DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in {"1", "true", "yes"}
+DEBUG = os.environ.get("DJANGO_DEBUG", "False").strip().lower() in {
+    "1", "true", "yes", "on"
+}
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+    for host in os.environ.get(
+        "DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost"
+    ).split(",")
     if host.strip()
 ]
 
