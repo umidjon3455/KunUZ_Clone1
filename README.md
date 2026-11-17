@@ -7,8 +7,11 @@ Django asosida yaratilgan yangiliklar sayti. Unda yangiliklar, kategoriyalar va 
 - Python 3.11+
 - Django 5.2
 - Pillow
+- python-dotenv
 
 ## O'rnatish
+
+Repozitoriyani yuklab oling va loyiha papkasiga kiring:
 
 ```bash
 git clone https://github.com/umidjon3455/KunUZ_Clone1.git
@@ -20,15 +23,23 @@ Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
+Copy-Item .env.example .env
 ```
 
 macOS/Linux:
 
 ```bash
 source .venv/bin/activate
+cp .env.example .env
 ```
 
-Kutubxonalarni o'rnating:
+**Muhim:** `.env` faylini oching va `DJANGO_SECRET_KEY` qiymatini yangi, tasodifiy maxfiy kalitga almashtiring. Kalit yaratish:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Kutubxonalarni o'rnating va serverni ishga tushiring:
 
 ```bash
 python -m pip install --upgrade pip
@@ -45,9 +56,15 @@ Admin foydalanuvchi yaratish:
 python manage.py createsuperuser
 ```
 
+## Muhit o'zgaruvchilari
+
+- `DJANGO_SECRET_KEY` — maxfiy kalit; repozitoriyga joylamang.
+- `DJANGO_DEBUG=True` — faqat lokal ishlab chiqish uchun. Production muhitida `False` qiling.
+- `DJANGO_ALLOWED_HOSTS` — domenlar ro'yxati, vergul bilan ajratiladi.
+
 ## Xavfsizlik
 
-Deploy qilishdan oldin `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=False` va `DJANGO_ALLOWED_HOSTS` muhit o'zgaruvchilarini sozlang. Haqiqiy maxfiy kalitni repozitoriyga joylamang. Avvalgi commitda ochiq turgan kalitni ham almashtiring.
+Haqiqiy `.env` fayli Git'ga qo'shilmaydi. Avvalgi commitlarda ochiq bo'lgan maxfiy kalitlarni yangi kalit bilan almashtiring.
 
 ## Muallif
 
